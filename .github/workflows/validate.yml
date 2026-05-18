@@ -1,0 +1,25 @@
+name: OSM-CH CI Pipeline
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-examples:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install dependencies
+      run: pip install -r validator/requirements.txt
+    - name: Validate Core Schema against Metaschema
+      run: python -c "import json; from jsonschema.validators import Draft202012Validator; Draft202012Validator.check_schema(json.load(open('schema/v1/verfahren.schema.json')))"
+    - name: Validate Examples
+      run: |
+        for file in examples/*.json; do
+          python validator/app.py --validate "$file"
+        done

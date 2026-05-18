@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.osm-ch.org/v1/verfahren.json",
+  "title": "OSM-CH VerfahrenRecord",
+  "type": "object",
+  "properties": {
+    "verfahren_id": { "type": "string", "pattern": "^urn:osm-ch:(ch-[a-z]{2}|admin):[a-z0-9-]+:v[0-9]+$" },
+    "titel": { "type": "string" },
+    "zweck": { "type": "string" },
+    "version": { "type": "string" },
+    "gueltig_ab": { "type": "string", "format": "date" },
+    "betroffenheitslage": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "fristen": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "typ": { "type": "string", "enum": ["absolut", "relativ", "situativ"] },
+          "rechtsfolge_bei_versaeumnis": { "type": "string" },
+          "minimalhandlung_zur_wahrung": { "type": "string" }
+        },
+        "required": ["typ", "rechtsfolge_bei_versaeumnis", "minimalhandlung_zur_wahrung"]
+      }
+    },
+    "hilfsoptionen": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "unterstuetzungsgrad": { "type": "string", "enum": ["informell", "beistand", "vertretung"] },
+          "zugangskanal": { "type": "string", "format": "uri" }
+        },
+        "required": ["unterstuetzungsgrad", "zugangskanal"]
+      }
+    },
+    "naechster_schritt": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "bedingung": { "type": "string" },
+          "aktion_url": { "type": "string", "format": "uri" }
+        },
+        "required": ["bedingung", "aktion_url"]
+      }
+    }
+  },
+  "required": [ "verfahren_id", "titel", "zweck", "version", "gueltig_ab", "betroffenheitslage", "fristen", "hilfsoptionen", "naechster_schritt" ],
+  "additionalProperties": false
+}

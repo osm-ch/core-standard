@@ -1,0 +1,21 @@
+{
+  "verfahren_id": "urn:osm-ch:ch-zh:iv-erstanmeldung:v1",
+  "titel": "Erstanmeldung für Erwachsene: Berufliche Integration / Rente",
+  "zweck": "Einleitung der Abklärung des Anspruchs auf Leistungen der IV.",
+  "version": "1.0.0",
+  "gueltig_ab": "2026-06-01",
+  "betroffenheitslage": [ "Länger andauernde gesundheitliche Einschränkung", "Drohender Jobverlust" ],
+  "fristen": [
+    {
+      "typ": "situativ",
+      "rechtsfolge_bei_versaeumnis": "Leistungsanspruch kann für vergangene Monate verwirken.",
+      "minimalhandlung_zur_wahrung": "Formloses Einreichen des Basisformulars mit Unterschrift."
+    }
+  ],
+  "hilfsoptionen": [
+    { "unterstuetzungsgrad": "vertretung", "zugangskanal": "https://www.svazurich.ch/vollmacht" }
+  ],
+  "naechster_schritt": [
+    { "bedingung": "Basisdokumente liegen vor", "aktion_url": "https://www.svazurich.ch/iv-anmeldung-start" }
+  ]
+}
