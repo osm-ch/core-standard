@@ -16,3 +16,11 @@ Dieser Standard ist Public Domain (CC0). Er ist als Open-Source-Drop konzipiert.
 pip install -r validator/requirements.txt
 python validator/app.py --validate examples/iv-erstanmeldung.minimal.json
 ```
+
+## License
+
+This repository is released under [Creative Commons Zero v1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) (CC0-1.0).
+
+`SPDX-License-Identifier: CC0-1.0`
+
+The OSM-CH standard, schemas, examples, documentation, and reference validator are dedicated to the public domain to enable unrestricted reuse by public authorities, NGOs, civic-tech projects, auditors, and software implementers.
