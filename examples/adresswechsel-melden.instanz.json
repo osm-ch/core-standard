@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "basis_verfahren": "adresswechsel-melden",
+  "instanz_id": "adresswechsel-melden:lu",
+  "zustaendigkeitsgebiet": "CH-LU",
+  "version": "2026-10-01",
+  "gueltig_ab": "2026-10-01",
+  "gueltig_bis": null,
+  "kontaktstellen": [
+    {
+      "name": "Beispielstelle Luzern",
+      "url": "https://example.org/address"
+    }
+  ],
+  "overrides": {}
+}

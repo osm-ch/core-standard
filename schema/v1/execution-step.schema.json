@@ -1,0 +1,497 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.osm-ch.ch/v1/execution-step.schema.json",
+  "title": "OSM-CH ExecutionStep",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "execution_step_id",
+    "procedure_id",
+    "instance_id",
+    "source_step_id",
+    "order",
+    "goal",
+    "action",
+    "urgency",
+    "channels",
+    "outcome_verification",
+    "source_refs",
+    "verification_status",
+    "freshness_status",
+    "expected_evidence",
+    "success_states",
+    "failure_routes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "execution_step_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]{2,191}$"
+    },
+    "procedure_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]{2,127}$"
+    },
+    "instance_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]{2,127}$"
+    },
+    "source_step_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "order": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 10
+    },
+    "action": {
+      "type": "string",
+      "minLength": 30
+    },
+    "urgency": {
+      "enum": [
+        "hoch",
+        "mittel",
+        "niedrig"
+      ]
+    },
+    "channels": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 2
+      }
+    },
+    "action_link": {
+      "type": "string",
+      "format": "uri"
+    },
+    "outcome_verification": {
+      "$ref": "#/$defs/outcome_verification"
+    },
+    "procedure_deadline_context": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/deadline_context"
+      },
+      "default": []
+    },
+    "authority_contacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/contact"
+      },
+      "default": []
+    },
+    "source_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 3
+      }
+    },
+    "verification_status": {
+      "enum": [
+        "not_reviewed",
+        "in_review",
+        "needs_clarification",
+        "verified",
+        "rejected"
+      ]
+    },
+    "freshness_status": {
+      "enum": [
+        "not_assessed",
+        "current",
+        "review_due",
+        "outdated"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true,
+      "default": {}
+    },
+    "expected_evidence": {
+      "$ref": "#/$defs/expected_evidence"
+    },
+    "success_states": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/success_state"
+      }
+    },
+    "failure_routes": {
+      "$ref": "#/$defs/failure_routes"
+    }
+  },
+  "$defs": {
+    "outcome_verification": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason"
+          ],
+          "properties": {
+            "status": {
+              "const": "not_modelled"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 20
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "method",
+            "criteria"
+          ],
+          "properties": {
+            "status": {
+              "const": "modelled"
+            },
+            "method": {
+              "enum": [
+                "authority_confirmation",
+                "document_receipt",
+                "external_status",
+                "deterministic_rule",
+                "human_review"
+              ]
+            },
+            "criteria": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 3
+              }
+            }
+          }
+        }
+      ]
+    },
+    "fallback_route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "label",
+        "source_refs"
+      ],
+      "properties": {
+        "kind": {
+          "const": "support_option"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 10
+        },
+        "channel": {
+          "type": "string",
+          "minLength": 2
+        },
+        "support_level": {
+          "type": "string",
+          "minLength": 2
+        },
+        "source_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 3
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "deadline_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deadline_id",
+        "label",
+        "start",
+        "consequence",
+        "source_refs"
+      ],
+      "properties": {
+        "deadline_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 10
+        },
+        "start": {
+          "type": "string",
+          "minLength": 10
+        },
+        "end": {
+          "type": "string",
+          "minLength": 3
+        },
+        "duration_iso8601": {
+          "type": "string",
+          "pattern": "^P"
+        },
+        "consequence": {
+          "type": "string",
+          "minLength": 15
+        },
+        "minimal_action": {
+          "type": "string",
+          "minLength": 15
+        },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 3
+          }
+        }
+      }
+    },
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 5
+        },
+        "telefon": {
+          "type": "string",
+          "minLength": 5
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "adresse": {
+          "type": "string",
+          "minLength": 10
+        }
+      }
+    },
+    "expected_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "requirements"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "available",
+            "not_modelled"
+          ]
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "required",
+              "source_refs"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "receipt",
+                  "tracking",
+                  "photo",
+                  "video",
+                  "document",
+                  "signature",
+                  "third_party_confirmation",
+                  "measurement",
+                  "timestamp",
+                  "location_attestation",
+                  "text"
+                ]
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "source_refs": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 3
+                }
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "available"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "requirements": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "not_modelled"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "requirements": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "scope",
+        "method",
+        "prompt",
+        "expected"
+      ],
+      "properties": {
+        "state": {
+          "const": "action_performed"
+        },
+        "scope": {
+          "const": "action_performed"
+        },
+        "method": {
+          "const": "user_attestation"
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 10
+        },
+        "expected": {
+          "const": true
+        }
+      }
+    },
+    "failure_routes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "routes"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "available",
+            "not_modelled"
+          ]
+        },
+        "routes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fallback_route"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "available"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "routes": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "not_modelled"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "routes": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "$comment": "SPDX-License-Identifier: CC0-1.0"
+}

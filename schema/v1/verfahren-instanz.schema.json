@@ -1,0 +1,899 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.osm-ch.ch/v1/verfahren-instanz.schema.json",
+  "title": "OSM-CH VerfahrenInstanz",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "basis_verfahren",
+    "instanz_id",
+    "zustaendigkeitsgebiet",
+    "version",
+    "gueltig_ab",
+    "kontaktstellen"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$"
+    },
+    "basis_verfahren": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]{2,127}$"
+    },
+    "instanz_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]{2,127}$"
+    },
+    "zustaendigkeitsgebiet": {
+      "type": "string",
+      "pattern": "^CH(?:-(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)(?:-[0-9]{4})?)?$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "gueltig_ab": {
+      "type": "string",
+      "format": "date"
+    },
+    "gueltig_bis": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "kontaktstellen": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/contact"
+      }
+    },
+    "overrides": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "titel": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "formal"
+          ],
+          "properties": {
+            "formal": {
+              "type": "string",
+              "minLength": 10
+            },
+            "einfach": {
+              "type": "string",
+              "minLength": 10
+            },
+            "leicht": {
+              "type": "string",
+              "minLength": 10
+            }
+          }
+        },
+        "zustaendigkeiten": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/responsibility"
+          }
+        },
+        "einstiegswege": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/entry_channel"
+          }
+        },
+        "dokumente": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/document_requirement"
+          }
+        },
+        "fristen": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/deadline"
+          }
+        },
+        "hilfsoptionen": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/support_option"
+          }
+        },
+        "rechtsmittel": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/remedy"
+          }
+        },
+        "naechster_schritt": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/next_step"
+          }
+        },
+        "barrierefreiheitsmodi": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true,
+          "default": {}
+        },
+        "verzweigungen": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/branch"
+          }
+        },
+        "risiken": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/risk"
+          }
+        },
+        "krisenrelevant": {
+          "type": "boolean"
+        },
+        "hauptansprueche": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claim"
+          }
+        },
+        "source_records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source_record"
+          }
+        },
+        "data_gaps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/data_gap"
+          }
+        },
+        "verification_status": {
+          "enum": [
+            "not_reviewed",
+            "in_review",
+            "needs_clarification",
+            "verified",
+            "rejected"
+          ]
+        },
+        "freshness_status": {
+          "enum": [
+            "not_assessed",
+            "current",
+            "review_due",
+            "outdated"
+          ]
+        },
+        "last_reviewed_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "sprachen": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "de",
+              "fr",
+              "it",
+              "rm",
+              "en"
+            ]
+          }
+        },
+        "sprachmodi": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "formal",
+              "einfach",
+              "leicht"
+            ]
+          }
+        },
+        "parallelansprueche": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claim"
+          },
+          "default": []
+        },
+        "mitwirkungspflichten": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/obligation"
+          },
+          "default": []
+        },
+        "assistierter_modus": {
+          "$ref": "#/$defs/assisted_mode"
+        }
+      },
+      "default": {}
+    },
+    "proof": {
+      "$ref": "#/$defs/proof"
+    }
+  },
+  "$defs": {
+    "lage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lage_id",
+        "label"
+      ],
+      "properties": {
+        "lage_id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 10
+        },
+        "beschreibung": {
+          "type": "string",
+          "minLength": 30
+        }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "label"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 10
+        },
+        "beschreibung": {
+          "type": "string",
+          "minLength": 30
+        }
+      }
+    },
+    "responsibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "typ",
+        "stelle"
+      ],
+      "properties": {
+        "typ": {
+          "enum": [
+            "primaer",
+            "alternativ",
+            "eskalation",
+            "weiterleitung"
+          ]
+        },
+        "stelle": {
+          "type": "string",
+          "minLength": 10
+        },
+        "region": {
+          "type": "string"
+        },
+        "hinweis": {
+          "type": "string",
+          "minLength": 10
+        }
+      }
+    },
+    "entry_channel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kanal",
+        "zulaessig"
+      ],
+      "properties": {
+        "kanal": {
+          "enum": [
+            "online",
+            "schriftlich",
+            "persoenlich",
+            "telefonisch",
+            "vertretung",
+            "beratungsstelle",
+            "sozialdienst"
+          ]
+        },
+        "zulaessig": {
+          "type": "boolean"
+        },
+        "begruendung_ausschluss": {
+          "type": "string",
+          "minLength": 10
+        },
+        "link": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "document_requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dokument_id",
+        "label",
+        "status"
+      ],
+      "properties": {
+        "dokument_id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 10
+        },
+        "status": {
+          "enum": [
+            "zwingend_vor_erstkontakt",
+            "zwingend_bis_entscheid",
+            "nachreichbar",
+            "optional_empfohlen",
+            "durch_dritte_beschaffbar"
+          ]
+        },
+        "beschreibung": {
+          "type": "string",
+          "minLength": 10
+        }
+      }
+    },
+    "deadline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "frist_id",
+        "label",
+        "startpunkt",
+        "rechtsfolge_versaeumnis",
+        "minimalhandlung"
+      ],
+      "properties": {
+        "frist_id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 10
+        },
+        "startpunkt": {
+          "type": "string",
+          "minLength": 10
+        },
+        "endpunkt": {
+          "type": "string",
+          "minLength": 10
+        },
+        "dauer_iso8601": {
+          "type": "string",
+          "pattern": "^P"
+        },
+        "rechtsfolge_versaeumnis": {
+          "type": "string",
+          "minLength": 15
+        },
+        "verlaengerbar": {
+          "type": "boolean"
+        },
+        "fristwahrung": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "minimalhandlung": {
+          "type": "string",
+          "minLength": 15
+        }
+      }
+    },
+    "obligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "pflichtgrad"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 10
+        },
+        "pflichtgrad": {
+          "enum": [
+            "zwingend",
+            "empfohlen",
+            "freiwillig"
+          ]
+        },
+        "beschreibung": {
+          "type": "string",
+          "minLength": 10
+        }
+      }
+    },
+    "support_option": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "typ",
+        "label",
+        "unterstuetzungsgrad",
+        "zugangskanal"
+      ],
+      "properties": {
+        "typ": {
+          "enum": [
+            "vertrauensperson",
+            "gesetzliche_vertretung",
+            "beistand",
+            "beratungsstelle",
+            "sozialdienst",
+            "sprachmittlung",
+            "barrierefreie_kommunikation",
+            "assistierte_digitale_einreichung",
+            "sonstige"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 10
+        },
+        "unterstuetzungsgrad": {
+          "enum": [
+            "information",
+            "begleitung",
+            "einreichung",
+            "vertretung"
+          ]
+        },
+        "zugangskanal": {
+          "type": "string",
+          "minLength": 3
+        },
+        "vollmacht_noetig": {
+          "type": "boolean"
+        },
+        "hinweis": {
+          "type": "string",
+          "minLength": 10
+        }
+      }
+    },
+    "branch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "wenn",
+        "dann"
+      ],
+      "properties": {
+        "wenn": {
+          "type": "string",
+          "minLength": 10
+        },
+        "dann": {
+          "type": "string",
+          "minLength": 10
+        },
+        "naechster_schritt_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "ausloeser",
+        "folge"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 10
+        },
+        "ausloeser": {
+          "type": "string",
+          "minLength": 10
+        },
+        "folge": {
+          "type": "string",
+          "minLength": 15
+        },
+        "minderung": {
+          "type": "string",
+          "minLength": 10
+        }
+      }
+    },
+    "remedy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "ausloeser",
+        "frist"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 10
+        },
+        "ausloeser": {
+          "type": "string",
+          "minLength": 10
+        },
+        "frist": {
+          "type": "string",
+          "minLength": 5
+        },
+        "stelle": {
+          "type": "string",
+          "minLength": 5
+        },
+        "hinweis": {
+          "type": "string",
+          "minLength": 10
+        }
+      }
+    },
+    "next_step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step_id",
+        "label",
+        "dringlichkeit",
+        "kanal",
+        "beschreibung"
+      ],
+      "properties": {
+        "step_id": {
+          "type": "string"
+        },
+        "lage_ref": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 10
+        },
+        "dringlichkeit": {
+          "enum": [
+            "hoch",
+            "mittel",
+            "niedrig"
+          ]
+        },
+        "kanal": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "beschreibung": {
+          "type": "string",
+          "minLength": 30
+        },
+        "link": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "assisted_mode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aktiv",
+        "vertrauensperson_erlaubt",
+        "dritte_duerfen_einreichen"
+      ],
+      "properties": {
+        "aktiv": {
+          "type": "boolean"
+        },
+        "vertrauensperson_erlaubt": {
+          "type": "boolean"
+        },
+        "vollmacht_regel": {
+          "type": "string",
+          "minLength": 10
+        },
+        "dritte_duerfen_einreichen": {
+          "type": "boolean"
+        },
+        "alternativkanaele": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 5
+        },
+        "telefon": {
+          "type": "string",
+          "minLength": 5
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "adresse": {
+          "type": "string",
+          "minLength": 10
+        }
+      }
+    },
+    "proof": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "hash",
+        "algorithm",
+        "timestamp",
+        "issuer",
+        "content_type",
+        "version"
+      ],
+      "properties": {
+        "hash": {
+          "type": "string",
+          "minLength": 10
+        },
+        "algorithm": {
+          "type": "string",
+          "minLength": 3
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "issuer": {
+          "type": "string",
+          "minLength": 3
+        },
+        "content_type": {
+          "type": "string",
+          "minLength": 3
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^1\\.[0-9]+\\.[0-9]+$"
+        }
+      }
+    },
+    "source_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "title",
+        "publisher",
+        "jurisdiction",
+        "source_kind",
+        "retrieved_at",
+        "content_hash",
+        "verification_status",
+        "freshness_status",
+        "affected_fields"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]{2,127}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 3
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 2
+        },
+        "jurisdiction": {
+          "type": "string",
+          "pattern": "^CH(?:-(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)(?:-[0-9]{4})?)?$",
+          "description": "Schweizer Jurisdiktionscode: CH, CH-<Kanton> oder CH-<Kanton>-<BFS-Gemeindenummer>."
+        },
+        "source_kind": {
+          "enum": [
+            "law",
+            "ordinance",
+            "official_guidance",
+            "official_form",
+            "official_statistics",
+            "court_decision",
+            "research",
+            "other"
+          ]
+        },
+        "published_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "effective_from": {
+          "type": "string",
+          "format": "date"
+        },
+        "effective_until": {
+          "type": "string",
+          "format": "date"
+        },
+        "retrieved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_reviewed_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "content_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "verification_status": {
+          "enum": [
+            "not_reviewed",
+            "in_review",
+            "needs_clarification",
+            "verified",
+            "rejected"
+          ]
+        },
+        "freshness_status": {
+          "enum": [
+            "not_assessed",
+            "current",
+            "review_due",
+            "outdated"
+          ]
+        },
+        "affected_fields": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(?:$|/)"
+          }
+        },
+        "storage_ref": {
+          "type": "string",
+          "format": "uri-reference"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "url"
+          ]
+        },
+        {
+          "required": [
+            "storage_ref"
+          ]
+        }
+      ]
+    },
+    "data_gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gap_id",
+        "state",
+        "description",
+        "affected_fields",
+        "identified_on"
+      ],
+      "properties": {
+        "gap_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]{2,127}$"
+        },
+        "state": {
+          "enum": [
+            "open",
+            "investigating",
+            "resolved",
+            "not_applicable",
+            "disputed"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 10
+        },
+        "affected_fields": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(?:$|/)"
+          }
+        },
+        "source_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._:-]{2,127}$"
+          }
+        },
+        "identified_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "resolved_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "resolution_note": {
+          "type": "string",
+          "minLength": 10
+        }
+      }
+    }
+  },
+  "$comment": "SPDX-License-Identifier: CC0-1.0"
+}

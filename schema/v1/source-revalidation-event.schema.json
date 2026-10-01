@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.osm-ch.ch/v1/source-revalidation-event.schema.json",
+  "title": "OSM-CH SourceRevalidationEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "source_id",
+    "previous_snapshot_id",
+    "current_snapshot_id",
+    "observed_at",
+    "status",
+    "affected_fields"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "event_id": {
+      "type": "string",
+      "pattern": "^reval:[a-z0-9][a-z0-9._:-]{2,191}$"
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 3
+    },
+    "previous_snapshot_id": {
+      "type": "string",
+      "minLength": 6
+    },
+    "current_snapshot_id": {
+      "type": "string",
+      "minLength": 6
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "enum": [
+        "unchanged",
+        "changed",
+        "source_missing",
+        "capture_error"
+      ]
+    },
+    "affected_fields": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(?:$|/)"
+      }
+    },
+    "requires_revalidation": {
+      "type": "boolean"
+    },
+    "previous_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "current_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "note": {
+      "type": "string",
+      "minLength": 3
+    }
+  },
+  "$comment": "SPDX-License-Identifier: CC0-1.0"
+}
