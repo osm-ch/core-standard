@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.osm-ch.ch/v1/validation-evidence.schema.json",
+  "title": "OSM-CH ValidationEvidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "subject_profile",
+    "subject_id",
+    "validated_at",
+    "validator_version",
+    "input_hash",
+    "report_hash",
+    "outcome",
+    "source_snapshot_refs",
+    "review_state"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "evidence_id": {
+      "type": "string",
+      "pattern": "^ve:[a-f0-9]{64}$"
+    },
+    "subject_profile": {
+      "enum": [
+        "verfahren-typ",
+        "verfahren-instanz",
+        "resolved-verfahren",
+        "life-event",
+        "execution-step",
+        "step-card-view"
+      ]
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 3
+    },
+    "validated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "validator_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "report_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "outcome": {
+      "enum": [
+        "pass",
+        "review",
+        "block"
+      ]
+    },
+    "source_snapshot_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 6
+      }
+    },
+    "review_state": {
+      "enum": [
+        "single_check",
+        "second_check_confirmed",
+        "second_check_disputed"
+      ]
+    },
+    "second_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewer",
+        "result"
+      ],
+      "properties": {
+        "reviewer": {
+          "type": "string",
+          "minLength": 2
+        },
+        "result": {
+          "enum": [
+            "confirmed",
+            "disputed"
+          ]
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "note": {
+          "type": "string",
+          "minLength": 3
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true,
+      "default": {}
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "review_state": {
+            "const": "single_check"
+          }
+        },
+        "required": [
+          "review_state"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "second_check"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "review_state": {
+            "enum": [
+              "second_check_confirmed",
+              "second_check_disputed"
+            ]
+          }
+        },
+        "required": [
+          "review_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "second_check"
+        ]
+      }
+    }
+  ],
+  "$comment": "SPDX-License-Identifier: CC0-1.0"
+}

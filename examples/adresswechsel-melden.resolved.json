@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0.0",
+  "verfahren_id": "adresswechsel-melden",
+  "verfahrensklasse": "notification",
+  "titel": {
+    "formal": "Adressänderung an die zuständige Stelle melden",
+    "einfach": "Neue Adresse melden",
+    "leicht": "Sie sind umgezogen. Melden Sie Ihre neue Adresse."
+  },
+  "zweck": "Das Verfahren meldet eine neue Wohnadresse an die zuständige Verwaltungsstelle.",
+  "betroffenheitslagen": [
+    {
+      "lage_id": "umzug",
+      "label": "Wohnadresse hat sich geändert",
+      "beschreibung": "Eine Person ist umgezogen und muss ihre neue Wohnadresse der zuständigen Stelle mitteilen."
+    }
+  ],
+  "hauptansprueche": [],
+  "zustaendigkeiten": [
+    {
+      "typ": "primaer",
+      "stelle": "Beispielstelle Luzern"
+    }
+  ],
+  "einstiegswege": [
+    {
+      "kanal": "online",
+      "zulaessig": true,
+      "link": "https://example.org/address"
+    }
+  ],
+  "dokumente": [],
+  "fristen": [],
+  "hilfsoptionen": [],
+  "verzweigungen": [],
+  "risiken": [],
+  "rechtsmittel": [],
+  "naechster_schritt": [
+    {
+      "step_id": "adresse-online-melden",
+      "label": "Neue Adresse online melden",
+      "dringlichkeit": "mittel",
+      "kanal": [
+        "online"
+      ],
+      "beschreibung": "Öffnen Sie den offiziellen Meldeweg und übermitteln Sie dort die neue Wohnadresse.",
+      "link": "https://example.org/address"
+    }
+  ],
+  "sprachmodi": [
+    "formal",
+    "einfach"
+  ],
+  "sprachen": [
+    "de"
+  ],
+  "barrierefreiheitsmodi": [
+    "browser"
+  ],
+  "source_records": [
+    {
+      "source_id": "src-adressmeldung-lu",
+      "title": "Offizielle Information zur Adressmeldung",
+      "url": "https://example.org/address",
+      "publisher": "Beispielstelle Luzern",
+      "jurisdiction": "CH-LU",
+      "source_kind": "official_guidance",
+      "retrieved_at": "2026-10-01T08:00:00Z",
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "verification_status": "not_reviewed",
+      "freshness_status": "not_assessed",
+      "affected_fields": [
+        "/naechster_schritt"
+      ]
+    }
+  ],
+  "data_gaps": [
+    {
+      "gap_id": "not-applicable-optional-modules",
+      "state": "not_applicable",
+      "description": "This notification procedure does not use the listed conditional modules.",
+      "affected_fields": [
+        "/hauptansprueche",
+        "/dokumente",
+        "/fristen",
+        "/hilfsoptionen",
+        "/verzweigungen",
+        "/risiken",
+        "/rechtsmittel",
+        "/krisenrelevant"
+      ],
+      "identified_on": "2026-10-01"
+    }
+  ],
+  "verification_status": "not_reviewed",
+  "freshness_status": "not_assessed",
+  "extensions": {
+    "fixture_kind": "synthetic_genericity_example",
+    "warning": "No real authority or live procedure claim; example.org URLs are placeholders."
+  },
+  "basis_verfahren": "adresswechsel-melden",
+  "instanz_id": "adresswechsel-melden:lu",
+  "zustaendigkeitsgebiet": "CH-LU",
+  "version": "2026-10-01",
+  "gueltig_ab": "2026-10-01",
+  "gueltig_bis": null,
+  "kontaktstellen": [
+    {
+      "name": "Beispielstelle Luzern",
+      "url": "https://example.org/address"
+    }
+  ]
+}

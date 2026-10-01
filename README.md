@@ -1,26 +1,86 @@
-# OSM-CH 0.1 – Offenlegungsstandard Schweiz
+# OSM-CH Core Standard
 
-Barrierefreiheit (Accessibility) ist inkomplett ohne maschinenlesbare Handlungsfähigkeit (Actionability). Behördenportale, die Formulare als unstrukturierte PDFs oder reine Text-Webseiten digitalisieren, digitalisieren das Papier, nicht den Prozess. 
+OSM-CH ist ein offener, maschinenlesbarer Kern für Schweizer Verwaltungsverfahren.
 
-**OSM-CH** ist ein kanonisches Datenmodell (JSON-Schema) und ein Compliance-Regelwerk. Es zwingt staatliche Stellen dazu, Verfahrenslogiken – insbesondere Fristen, Risiken, Verzweigungen und Hilfsangebote – deterministisch und maschinenlesbar offenzulegen.
+Der öffentliche Core beschreibt nicht, **welche Entscheidung eine Behörde treffen muss**. Er beschreibt nachvollziehbar und deterministisch:
 
-Dieser Standard ist Public Domain (CC0). Er ist als Open-Source-Drop konzipiert. Civic-Tech-Entwickler, NGOs und Architekten sind aufgerufen, dieses Schema zu nutzen, um kantonalen Vollzug auditierbar zu machen.
+- einen allgemeinen Verfahrenstyp;
+- eine föderale oder lokale Instanz dieses Verfahrens;
+- den daraus aufgelösten `ResolvedProcedure`;
+- LifeEvents, die mehrere Verfahren orchestrieren;
+- ausführbare Schritte und reine StepCard-Präsentationen;
+- Source-Snapshots, Revalidation und Validation Evidence.
 
-## Architektur-Prinzipien
-1. **Deterministische Actionability:** Ein Verfahren ohne maschinenlesbaren nächsten Schritt, dokumentierte Rechtsfolgen bei Fristversäumnis und explizite Minimalhandlungen ist nicht konform (Hard Fail).
-2. **Shift-Left Validierung:** Validierung passiert im CI/CD-Prozess der Behörden.
-3. **Föderaler Namespace:** Kollisionsfreie Identifikatoren durch eCH-kompatible URNs (z.B. `urn:osm-ch:ch-zh:iv-erstanmeldung:v1`).
+Der öffentliche Kern enthält **keine persönlichen Falldaten** und keine amtlichen Luzerner Inhaltskopien.
 
-## Quick Start (Validator)
+## Core v1
+
+Normative Schemas liegen unter `schema/v1/`:
+
+- `verfahren-typ.schema.json`
+- `verfahren-instanz.schema.json`
+- `resolved-verfahren.schema.json`
+- `life-event.schema.json`
+- `execution-step.schema.json`
+- `step-card-view.schema.json`
+- `source-snapshot.schema.json`
+- `source-revalidation-event.schema.json`
+- `validation-evidence.schema.json`
+
+Wichtige Grundregeln:
+
+1. Type + Instance werden deterministisch zu einem ResolvedProcedure aufgelöst.
+2. Primitive Werte werden ersetzt, Objekte tief gemergt und Listen vollständig ersetzt.
+3. Unbekannte Information wird nicht erfunden; DataGap und Status bleiben explizit.
+4. `verification_status` und `freshness_status` sind getrennte Dimensionen.
+5. Ein ausgeführter Schritt ist nicht automatisch ein bestätigtes Behördenresultat.
+6. Persönliche Routing-Antworten und Task-Progress gehören nicht in den öffentlichen Katalog.
+7. Source-Bytes sind Daten und werden vom Core-Validator nicht ausgeführt.
+8. Probabilistische/LLM-Ausgaben sind keine Validierungs- oder Rechtsquelle.
+
+## Synthetic quick start
+
+Alle mitgelieferten Beispiele sind ausdrücklich synthetisch und verwenden Platzhalter-URLs.
+
 ```bash
-pip install -r validator/requirements.txt
-python validator/app.py --validate examples/iv-erstanmeldung.minimal.json
+python3 -m pip install -r validator/requirements.txt
+
+python3 validator/validate.py \
+  --type examples/adresswechsel-melden.typ.json \
+  --instance examples/adresswechsel-melden.instanz.json \
+  --resolved-out /tmp/adresswechsel.resolved.json
+
+diff -u examples/adresswechsel-melden.resolved.json /tmp/adresswechsel.resolved.json
 ```
+
+Ein einzelnes Artefakt kann direkt gegen sein Profil validiert werden:
+
+```bash
+python3 validator/validate.py \
+  --profile resolved-verfahren \
+  --validate examples/adresswechsel-melden.resolved.json
+```
+
+## Tests
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. python3 -m unittest discover -s tests -v
+```
+
+CI führt dieselbe Regression und den deterministischen Type/Instance-Resolve aus.
+
+## Referenzimplementierung
+
+Der öffentliche Core wird aus der privaten Entwicklungs-Workbench stabilisiert. Ein Ende-zu-Ende-Referenzfluss „Umzug nach Luzern“ wird in der Produkt-/Workbench-Schicht gepflegt und nicht als amtlicher Inhalt in dieses CC0-Kernrepo kopiert.
+
+Siehe `docs/PROVENANCE.md`, `docs/CORE_CONTRACT.md` und `docs/MIGRATION_FROM_0.1.md`.
+
+## Contributing
+
+Siehe `CONTRIBUTING.md`. Fehlende oder strittige amtliche Information soll als offene Lücke sichtbar bleiben, nicht durch Annahmen ersetzt werden.
 
 ## License
 
-This repository is released under [Creative Commons Zero v1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) (CC0-1.0).
+Dieses Repository steht unter **CC0 1.0 Universal**.
 
 `SPDX-License-Identifier: CC0-1.0`
-
-The OSM-CH standard, schemas, examples, documentation, and reference validator are dedicated to the public domain to enable unrestricted reuse by public authorities, NGOs, civic-tech projects, auditors, and software implementers.

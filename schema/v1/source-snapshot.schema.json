@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.osm-ch.ch/v1/source-snapshot.schema.json",
+  "title": "OSM-CH SourceSnapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "snapshot_id",
+    "source_id",
+    "captured_at",
+    "content_hash",
+    "byte_length",
+    "source_material_executed"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "snapshot_id": {
+      "type": "string",
+      "pattern": "^snap:[a-z0-9][a-z0-9._:-]{2,191}$"
+    },
+    "source_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]{2,127}$"
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "byte_length": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "storage_ref": {
+      "type": "string",
+      "format": "uri-reference"
+    },
+    "retrieval_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "previous_snapshot_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^snap:[a-z0-9][a-z0-9._:-]{2,191}$"
+    },
+    "source_material_executed": {
+      "const": false
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true,
+      "default": {}
+    }
+  },
+  "anyOf": [
+    {
+      "required": [
+        "storage_ref"
+      ]
+    },
+    {
+      "required": [
+        "retrieval_url"
+      ]
+    }
+  ],
+  "$comment": "SPDX-License-Identifier: CC0-1.0"
+}
