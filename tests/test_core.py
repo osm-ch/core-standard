@@ -175,6 +175,17 @@ class CoreContractTests(unittest.TestCase):
         for source in typ["source_records"]:
             self.assertTrue(source["url"].startswith("https://example.org/"))
 
+    def test_luzern_reference_proof_is_digest_only(self):
+        proof = json.loads((ROOT / "reference" / "luzern-proof.json").read_text(encoding="utf-8"))
+        self.assertFalse(proof["contains_personal_data"])
+        self.assertFalse(proof["contains_official_source_text"])
+        self.assertEqual(proof["assertion_scope"], "engineering_reproducibility_only")
+        self.assertEqual(proof["workbench"]["regression_tests"], {"passed": 89, "failed": 0})
+        self.assertEqual(proof["workbench"]["routed_procedures"], 7)
+        self.assertEqual(proof["citizen_surface"]["execution_steps"], 7)
+        self.assertRegex(proof["workbench"]["life_event_sha256"], r"^[a-f0-9]{64}$")
+        self.assertRegex(proof["citizen_surface"]["bundle_sha256"], r"^[a-f0-9]{64}$")
+
 
 if __name__ == "__main__":
     unittest.main()

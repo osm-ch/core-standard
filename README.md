@@ -73,7 +73,7 @@ CI führt dieselbe Regression und den deterministischen Type/Instance-Resolve au
 
 Der öffentliche Core wird aus der privaten Entwicklungs-Workbench stabilisiert. Ein Ende-zu-Ende-Referenzfluss „Umzug nach Luzern“ wird in der Produkt-/Workbench-Schicht gepflegt und nicht als amtlicher Inhalt in dieses CC0-Kernrepo kopiert.
 
-Siehe `docs/PROVENANCE.md`, `docs/CORE_CONTRACT.md` und `docs/MIGRATION_FROM_0.1.md`.
+Siehe `docs/PROVENANCE.md`, `docs/CORE_CONTRACT.md`, `docs/MIGRATION_FROM_0.1.md` und den datensparsamen Luzern-Referenznachweis in `docs/REFERENCE_PROOF_LUZERN.md` / `reference/luzern-proof.json`.
 
 ## Contributing
 
