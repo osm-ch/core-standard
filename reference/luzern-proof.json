@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-10-01",
+  "workbench": {
+    "repository": "swisscomfort/Schweiz",
+    "visibility": "private",
+    "commit": "e36a53ab1ffe06d47e1515580419ff56651ad232",
+    "regression_tests": {
+      "passed": 89,
+      "failed": 0
+    },
+    "root_schemas": 12,
+    "json_artifacts": 36,
+    "life_event_file": "examples/p2-luzern/umzug-nach-luzern.life-event.json",
+    "life_event_sha256": "4ccdf92e29d62d84f02bef59de7b807bf280f2807cf4f558cfd4d496e1d8c4e4",
+    "routed_procedures": 7
+  },
+  "citizen_surface": {
+    "repository": "swisscomfort/anspruchsradar-schweiz",
+    "visibility": "private",
+    "commit": "ef8d4bb047ea6e785b15c417948fd407619afb1e",
+    "bundle_file": "src/data/osm-luzern-reference.json",
+    "bundle_sha256": "4405766353bde18f26e72ea571079d3ec58987eca28015c2849c7ef5da286ac0",
+    "execution_steps": 7
+  },
+  "contains_personal_data": false,
+  "contains_official_source_text": false,
+  "assertion_scope": "engineering_reproducibility_only"
+}
